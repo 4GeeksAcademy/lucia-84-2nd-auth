@@ -17,9 +17,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 		},
 		actions: {
 			// Use getActions to call a function within a fuction
-			exampleFunction: () => {
-				getActions().changeColor(0, "green");
-			},
+
 
 			getMessage: async () => {
 				try{
@@ -33,22 +31,68 @@ const getState = ({ getStore, getActions, setStore }) => {
 					console.log("Error loading message from backend", error)
 				}
 			},
-			changeColor: (index, color) => {
-				//get the store
-				const store = getStore();
+			// Sign up a new user
+			signup: async (email, password) => {
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + "/api/register", {
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json"
+						},
+						body: JSON.stringify({email, password })
+					});
+					if (!resp.ok) throw new Error("Error en el registro");
 
-				//we have to loop the entire demo array to look for the respective index
-				//and change its color
-				const demo = store.demo.map((elm, i) => {
-					if (i === index) elm.background = color;
-					return elm;
-				});
+					const data = await resp.json();
+					window.location.href = "/login";
+				} catch (err) {
+					setError(err.message);
+				}
+			},
 
-				//reset the global store
-				setStore({ demo: demo });
-			}
-		}
-	};
+			// Log in an existing user
+			login: async (email, password) => {
+				try {
+					const resp = await fetch(process.env.BACKEND_URL + "/login", {
+						method: "POST",
+						headers: { "Content-Type": "application/json" },
+						body: JSON.stringify({ email, password }),
+					});
+					if (!resp.ok) throw new Error("Error when Login");
+
+					const data = await resp.json();
+					localStorage.setItem("token", data.token);
+					setStore({ token: data.token });
+				} catch (error) {
+					console.error("Error logging in:", error);
+					throw error;
+				}
+			},
+
+			logout: () => {
+				localStorage.removeItem("token");
+				setStore({ token: null });
+			},
+
+			// Fetch private data
+			private: async () => {
+                const token = localStorage.getItem("token");
+
+                if (!token) {
+                    console.warn("No token found in localStorage.");
+                    return false;
+                }
+
+                try {
+                    const response = await fetchWithAuthorization(token);
+                    return response.ok;
+                } catch (error) {
+                    console.error("Error validating token:", error);
+                    return false;
+                }
+            }
+        }
+    };
 };
 
 export default getState;
