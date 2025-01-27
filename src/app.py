@@ -19,6 +19,7 @@ from flask_jwt_extended import JWTManager
 
 from flask_bcrypt import Bcrypt
 
+
 # from models import Person
 
 ENV = "development" if os.getenv("FLASK_DEBUG") == "1" else "production"
@@ -82,15 +83,15 @@ def serve_any_other_file(path):
 @app.route('/register', methods=['POST'])
 def register():
     body = request.get_json(silent=True)
-    if body == None:
-        return jsonify({'msg': 'Debes enviar información el body: email y password'})
+    if body is None:
+        return jsonify({'msg': 'Debes enviar información el body: email y password'}), 400
     if 'email' not in body:
         return jsonify({'msg': 'El campo email es obligatorio'}), 400
     if 'password' not in body:
-        return jsonify({'msg': 'El campo password es obligatorio'})
+        return jsonify({'msg': 'El campo password es obligatorio'}), 400
     user = User.query.filter_by(email=body['email']).first()
     if user is not None:
-        return jsonify({'msg': f'El correo {body["email"]} ya ha sido registrado'}), 401
+        return jsonify({'msg': f'El correo {body["email"]} ya ha sido registrado'}), 409  # Change to Conflict
     new_user = User()
     new_user.email = body['email']
     new_user.password = bcrypt.generate_password_hash(body['password']).decode('utf-8')
@@ -98,6 +99,7 @@ def register():
     db.session.add(new_user)
     db.session.commit()
     return jsonify({'msg': 'Nuevo usuario creado con exito'}), 201
+
 
 @app.route('/login', methods=['POST'])
 def login():

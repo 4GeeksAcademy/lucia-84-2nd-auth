@@ -9,7 +9,7 @@ export const Signup = () => {
         e.preventDefault();
 
         try {
-            const response = await fetch("https://ideal-computing-machine-4jg6gp77gg59c77wg-3001.app.github.dev/register", {
+            const response = await fetch("https://bookish-fiesta-4jgppw9xpvp5cq44g-3001.app.github.dev//register", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",

@@ -53,7 +53,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			// Log in an existing user
 			login: async (email, password) => {
 				try {
-					const resp = await fetch(process.env.BACKEND_URL + "/login", {
+					const resp = await fetch("https://bookish-fiesta-4jgppw9xpvp5cq44g-3001.app.github.dev/login", {
 						method: "POST",
 						headers: { "Content-Type": "application/json" },
 						body: JSON.stringify({ email, password }),
@@ -76,23 +76,28 @@ const getState = ({ getStore, getActions, setStore }) => {
 
 			// Fetch private data
 			private: async () => {
-                const token = localStorage.getItem("token");
+				try {
+					const token = localStorage.getItem("token");
+					if (!token) return false;
 
-                if (!token) {
-                    console.warn("No token found in localStorage.");
-                    return false;
-                }
+					const resp = await fetch("https://bookish-fiesta-4jgppw9xpvp5cq44g-3001.app.github.dev//private", {
+						method: "GET",
+						headers: {
+							"Content-Type": "application/json",
+							"Authorization": "Bearer " + token,
+						},
+					});
+					if (!resp.ok) return false;
 
-                try {
-                    const response = await fetchWithAuthorization(token);
-                    return response.ok;
-                } catch (error) {
-                    console.error("Error validating token:", error);
-                    return false;
-                }
-            }
-        }
-    };
+					const data = await resp.json();
+					return true;
+				} catch (error) {
+					console.error("Error validando token:", error);
+					return false;
+				}
+			}
+		}
+	};
 };
 
 export default getState;
