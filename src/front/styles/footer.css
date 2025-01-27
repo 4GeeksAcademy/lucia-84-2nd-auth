@@ -1,0 +1,8 @@
+
+.footer {
+    margin-top: auto; /* Push the footer to the bottom */
+    background-color: #f8f9fa; /* Light background */
+    padding: 20px; /* Padding around the footer */
+    text-align: center; /* Center text */
+    box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+}

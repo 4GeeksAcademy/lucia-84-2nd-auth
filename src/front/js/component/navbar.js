@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Context } from "../store/appContext";
+import "../../styles/navbar.css"; // Ensure to include your CSS file
 
 export const Navbar = () => {
   const { store, actions } = useContext(Context);
@@ -12,23 +13,23 @@ export const Navbar = () => {
   };
 
   return (
-    <nav className="navbar navbar-light bg-info">
-      <div className="container-fluid">
-        <Link to="/" className="navbar-brand mb-0 h1">
-         Inicio
+    <nav className="navbar">
+      <div className="navbar-container">
+        <Link to="/" className="navbar-brand">
+          Inicio
         </Link>
-        <div className="ml-auto">
+        <div className="navbar-links">
           {!store.token ? (
             <>
-              <Link to="/signup" className="btn btn-secondary me-2">
+              <Link to="/signup" className="nav-button">
                 Registro
               </Link>
-              <Link to="/login" className="btn btn-secondary">
+              <Link to="/login" className="nav-button">
                 Login
               </Link>
             </>
           ) : (
-            <button onClick={handleLogout} className="btn btn-danger">
+            <button onClick={handleLogout} className="nav-button logout-button">
               Cerrar Sesión
             </button>
           )}

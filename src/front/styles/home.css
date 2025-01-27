@@ -5,3 +5,9 @@
     one more css for each page that will contain the selected used 
     on that page only (the ones not reused in other pages).
 */
+
+.img-small {
+	width: 80%; /* Adjust the percentage as needed */
+	max-width: 600px; /* Set a maximum width */
+	height: auto; /* Maintain aspect ratio */
+}

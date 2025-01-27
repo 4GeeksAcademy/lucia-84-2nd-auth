@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../../styles/signup.css"; // Ensure to include your CSS file
 
 export const Signup = () => {
     const [email, setEmail] = useState("");
@@ -29,10 +30,10 @@ export const Signup = () => {
     };
 
     return (
-        <div>
+        <div className="signup-container">
             <h1>Registro</h1>
             {error && <p className="error">{error}</p>}
-            <form onSubmit={handleSubmit}>
+            <form onSubmit={handleSubmit} className="signup-form">
                 <label>Email:</label>
                 <input
                     type="email"
@@ -47,7 +48,7 @@ export const Signup = () => {
                     onChange={(e) => setPassword(e.target.value)}
                     required
                 />
-                <button type="submit">Registrar</button>
+                <button type="submit" className="signup-button">Registrar</button>
             </form>
         </div>
     );
