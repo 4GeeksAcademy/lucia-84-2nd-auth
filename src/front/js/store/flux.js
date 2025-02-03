@@ -53,7 +53,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 			// Log in an existing user
 			login: async (email, password) => {
 				try {
-					const resp = await fetch("https://bookish-fiesta-4jgppw9xpvp5cq44g-3001.app.github.dev/login", {
+					const resp = await fetch(process.env.BACKEND_URL + "/login", {
 						method: "POST",
 						headers: { "Content-Type": "application/json" },
 						body: JSON.stringify({ email, password }),
@@ -80,7 +80,7 @@ const getState = ({ getStore, getActions, setStore }) => {
 					const token = localStorage.getItem("token");
 					if (!token) return false;
 
-					const resp = await fetch("https://bookish-fiesta-4jgppw9xpvp5cq44g-3001.app.github.dev//private", {
+					const resp = await fetch(process.env.BACKEND_URL + "/private", {
 						method: "GET",
 						headers: {
 							"Content-Type": "application/json",
